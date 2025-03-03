@@ -8,7 +8,6 @@ $db = DatabaseConnectionService::connect();
 $PostsModel = new PostsModel($db);
 $posts = $PostsModel->getAll();
 
-
 ?>
 
 <!DOCTYPE html>
