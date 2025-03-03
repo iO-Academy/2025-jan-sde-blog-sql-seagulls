@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 session_start();
+ob_start();
 
 require_once 'src/models/UsersModel.php';
 require_once 'src/services/DatabaseConnectionService.php';
@@ -10,20 +11,9 @@ $db = DatabaseConnectionService::connect();
 
 if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn']){
     header('Location: index.php');
-} else {
-    if (isset($_POST['submit'])){
-        $username = $_POST['username'];
-        $password = $_POST['password'];
-        $UsersModel = new UsersModel($db);
-        $login = $UsersModel->login($username, $password);
-        if ($login){
-            $_SESSION['loggedIn'] = true;
-            $_SESSION['username'] = $username;
-            header('Location: index.php');
-        } else {
-            echo "<p>Username and/or password are incorrect </p>";
-        }
-    }
+    exit();
+}
+
 ?>
 
     <!DOCTYPE html>
@@ -46,19 +36,32 @@ if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn']){
     <h2 class="text-3xl mb-4 text-center">Login</h2>
     <div class="mb-5">
         <label class="mb-3 block" for="username">Username:</label>
-        <input class="w-full px-3 py-2 text-lg" type="text" id="username" />
+        <input class="w-full px-3 py-2 text-lg" type="text" name="username" id="username" />
     </div>
 
     <div class="mb-5">
         <label class="mb-3 block" for="password">Password:</label>
-        <input class="w-full px-3 py-2 text-lg" type="password" id="password" />
+        <input class="w-full px-3 py-2 text-lg" type="password" name="password" id="password" />
     </div>
-    <label for="submit"></label>
-    <input class="px-3 py-2 mt-4 text-lg bg-indigo-400 hover:bg-indigo-700 hover:text-white transition inline-block rounded-sm" type="submit" value="Login" />
+
+    <?php
+    if (isset($_POST['submit'])) {
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+        $UsersModel = new UsersModel($db);
+        $login = $UsersModel->login($username, $password);
+        if ($login) {
+            $_SESSION['loggedIn'] = true;
+            $_SESSION['username'] = $username;
+            header('Location: index.php');
+        } else {
+            echo '<p>Username and/or password are incorrect </p>';
+        }
+    }
+    ?>
+<!--    <label for="submit"></label>-->
+    <input class="px-3 py-2 mt-4 text-lg bg-indigo-400 hover:bg-indigo-700 hover:text-white transition inline-block rounded-sm" type="submit" name="submit" value="Login" />
 </form>
 
 </body>
 </html>
-
-<?php
-}
