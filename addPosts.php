@@ -18,6 +18,7 @@ $content = $_POST['content'] ?? '';
 $titleError = "";
 $contentError = "";
 $dataIsValid = true;
+$postSubmitted = false;
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_SESSION['username_id'])) {
 
@@ -42,8 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_SESSION['username_id'])) {
         $PostsModel = new PostsModel($db);
         if ($PostsModel->AddSingle($postEntity)) {
             unset($_SESSION['titleError'], $_SESSION['contentError']);
-            header("Location: addPosts.php");
-            exit();
+            $postSubmitted = true;
         }
     }
 }
@@ -57,6 +57,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_SESSION['username_id'])) {
 <?php include_once 'header.php'; ?>
 
 <form method="post" class="container lg:w-3/4 mx-auto flex flex-col p-8 bg-slate-200">
+    <?php if ($postSubmitted): ?>
+    <h2 class="text-3x
+    l text-green-600 mb-4 text-center">Post Submitted Successfully!</h2>
+    <a href="addPosts.php" class="text-center text-blue-600 hover:underline">Create another post</a>
+    <?php else: ?>
     <h2 class="text-3xl mb-4 text-center">Create New Post</h2>
     <div class="flex flex-col sm:flex-row mb-5 gap-5">
         <div class="w-full sm:w-2/3">
@@ -79,4 +84,5 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_SESSION['username_id'])) {
     <button type="submit" class="px-3 py-2 mt-4 text-lg bg-indigo-400 hover:bg-indigo-700 hover:text-white transition inline-block rounded-sm">
         Create Post
     </button>
+    <?php endif; ?>
 </form>
