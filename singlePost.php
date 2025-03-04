@@ -11,6 +11,10 @@
 
 $post = $PostsModel->getSingle((int)$_GET['id']);
 
+if (!$post){
+    header('Location: index.php');
+}
+
  require_once 'header.php';
 ?>
 

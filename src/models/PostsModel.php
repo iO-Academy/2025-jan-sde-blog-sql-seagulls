@@ -24,7 +24,7 @@ class PostsModel
         return $query->fetchAll();
     }
 
-    public function getSingle(int $id): PostEntity
+    public function getSingle(int $id): PostEntity|false
     {
         $query = $this->db->prepare(
             'SELECT `posts`.`title`, `posts` . `id`, `posts` . `content`, `posts` . `date_posted` , `posts` . `time_posted`, `users` . `username` 
