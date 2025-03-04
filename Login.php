@@ -7,6 +7,7 @@ require_once 'src/services/DatabaseConnectionService.php';
 
 $db = DatabaseConnectionService::connect();
 
+if (!isset($_SESSION['loggedIn'])) {
     if (isset($_POST['submit'])) {
         $username = $_POST['username'];
         $password = $_POST['password'];
@@ -16,27 +17,16 @@ $db = DatabaseConnectionService::connect();
             $_SESSION['loggedIn'] = true;
             $_SESSION['username'] = $username;
             header('Location: index.php');
-        }
-        else {
-            $_SESSION['error'] = '<p>Username and/or password are incorrect </p>';
+        } else {
+            $_SESSION['error'] = '<p class="text-red-500">Username and/or password are incorrect </p>';
         }
     }
-    ?>
+} else {
+    header('Location: index.php');
+}
+include_once 'header.php';
+?>
 
-<head>
-    <meta charset="UTF-8">
-    <title>Blog - Login</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="selection:bg-teal-200">
-<nav class="flex justify-between items-center py-5 px-4 mb-10 border-b border-solid">
-    <a href="src/models/index.php"><h1 class="text-5xl">Blog</h1></a>
-    <div class="flex gap-5">
-        <a href="addPost.php">Create Post</a>
-        <a href="login.php">Login</a>
-        <a href="register.php">Register</a>
-    </div>
-</nav>
 <form method="post" class="container lg:w-1/4 mx-auto flex flex-col p-8 bg-slate-200">
     <h2 class="text-3xl mb-4 text-center">Login</h2>
     <div class="mb-5">
