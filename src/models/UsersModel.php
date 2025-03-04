@@ -16,4 +16,11 @@ Class UsersModel
         $query->execute([':username' => $username, ':password' => $password]);
         return $query->fetch();
     }
+
+    public function register(string $username, string $password, string $email): bool
+    {
+        $query = $this->db->prepare('INSERT INTO `users` (`username`,`password`, `email`) 
+                                            VALUES (:username, :password, :email);');
+        return $query->execute([':username' => $username, ':password' => $password, ':email' => $email]);
+    }
 }
