@@ -10,4 +10,5 @@ class PostEntity
     public string $content;
     public string $date_posted;
     public string $time_posted;
+    public int $username_id;
 }

@@ -23,4 +23,11 @@ class PostsModel
         $query->execute();
         return $query->fetchAll();
     }
+
+    public function AddSingle(PostEntity $postEntity): bool
+    {
+        $query = $this->db->prepare(
+            'INSERT INTO `posts` (`title`, `content`, `username_id`) VALUES (:title, :content, :username_id);');
+            return $query->execute([':title'=>$postEntity->title, ':content'=>$postEntity->content, ':username_id' => $postEntity->username_id]);
+    }
 }
