@@ -11,5 +11,7 @@
     <div class="flex gap-5">
         <a href="login.php">Login</a>
         <a href="logout.php">Log out</a>
+        <a href="userRegistration.php">Register</a>
+        <a href="addPosts.php">Add Post</a>
     </div>
 </nav>
