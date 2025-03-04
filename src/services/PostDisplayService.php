@@ -7,8 +7,8 @@ class PostDisplayService
     static public function displayAllPosts(array $posts): string
     {
         if ($posts==[]){
-            $output = "<p class='text-2xl mb-2'>No posts found</p>";
-        } else {
+            return "<p class='text-2xl mb-2'>No posts found</p>";
+        }
             $output = '';
 
             foreach ($posts as $post) {
@@ -26,7 +26,6 @@ class PostDisplayService
                 $output .= "<p>$content</p>";
                 $output .= '</article>';
             }
-        }
 
         return $output;
     }
