@@ -27,7 +27,7 @@ class PostsModel
     public function AddSingle(PostEntity $postEntity): bool
     {
         $query = $this->db->prepare(
-            'INSERT INTO `posts` (`title`, `content`, `username_id`) VALUES (:title, :content, :username_id);');
-            return $query->execute([':title'=>$postEntity->title, ':content'=>$postEntity->content, ':username_id' => $postEntity->username_id]);
+            'INSERT INTO `posts` (`title`, `content`, `username_id`,  `date_posted`, `time_posted`) VALUES (:title, :content, :username_id, :date_posted, :time_posted);');
+            return $query->execute([':title'=>$postEntity->title, ':content'=>$postEntity->content, ':username_id' => $postEntity->username_id, ':date_posted' => $postEntity->date_posted, ':time_posted' => $postEntity->time_posted]);
     }
 }
