@@ -18,7 +18,6 @@ if (isset($_POST['submit']) && isset($_SESSION['username_id'])) {
 
     var_dump($_SESSION, $title, $content);
 
-// Create a new post entity
     $postEntity = new PostEntity();
     $postEntity->title = $title;
     $postEntity->content = $content;
