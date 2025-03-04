@@ -7,7 +7,11 @@ require_once 'src/services/DatabaseConnectionService.php';
 
 $db = DatabaseConnectionService::connect();
 
-if (!isset($_SESSION['loggedIn'])) {
+if (isset($_SESSION['loggedIn'])) {
+    header('Location: index.php');
+    exit();
+    }
+
     if (isset($_POST['submit'])) {
         $username = $_POST['username'];
         $password = $_POST['password'];
@@ -17,13 +21,12 @@ if (!isset($_SESSION['loggedIn'])) {
             $_SESSION['loggedIn'] = true;
             $_SESSION['username'] = $username;
             header('Location: index.php');
+            exit();
         } else {
             $_SESSION['error'] = '<p class="text-red-500">Username and/or password are incorrect </p>';
         }
-    }
-} else {
-    header('Location: index.php');
 }
+
 include_once 'header.php';
 ?>
 
