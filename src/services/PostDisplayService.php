@@ -9,7 +9,13 @@ class PostDisplayService
         $output = '';
 
         foreach ($posts as $post) {
-            $content = substr($post->content, 0,100);
+            if (strlen($post->content) > 100){
+                $content = substr($post->content, 0,100);
+                $content .= '...';
+            } else {
+                $content = $post->content;
+            }
+
             $output .= '<article class="p-8 border border-solid rounded-md">';
             $output .= "<span class='px-3 py-2 bg bg-slate-200 inline-block mb-4 rounded-sm'>CATEGORY HERE</span>";
             $output .= '<div class="flex justify-between items-center flex-col md:flex-row mb-4">';
@@ -17,7 +23,7 @@ class PostDisplayService
             $output .= "<span class='text-xl'>LIKES & DISLIKES HERE</span>";
             $output .= '</div>';
             $output .= "<p class='text-2xl mb-2'>$post->date_posted - $post->username</p>";
-            $output .= "<p>$content...</p>";
+            $output .= "<p>$content</p>";
             $output .= '</article>';
         }
         return $output;
