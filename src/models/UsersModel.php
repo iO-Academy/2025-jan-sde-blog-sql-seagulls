@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 Class UsersModel
 {
@@ -18,14 +17,3 @@ Class UsersModel
         return $query->fetch();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
