@@ -5,6 +5,7 @@
  require_once 'src/services/DatabaseConnectionService.php';
  require_once 'src/entities/PostEntity.php';
  require_once 'src/models/PostsModel.php';
+ require_once 'src/entities/CommentEntity.php';
 
  $db = DatabaseConnectionService::connect();
  $PostsModel = new PostsModel($db);
@@ -16,7 +17,15 @@ if (!$post){
 }
 
  require_once 'header.php';
+
+$comments = $PostsModel->getComment((int)$_GET['id']);
+
+if (!$comments){
+    header('Location: index.php');
+}
+
 ?>
+
 
 
 <section class="container md:w-1/2 mx-auto">

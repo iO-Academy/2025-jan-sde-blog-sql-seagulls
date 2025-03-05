@@ -55,6 +55,5 @@ class PostsModel
         $query->setFetchMode(PDO::FETCH_CLASS, CommentEntity::class);
         $query->execute([':id' => $id]);
         return $query->fetch();
-        )
     }
 }
