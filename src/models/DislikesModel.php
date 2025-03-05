@@ -1,8 +1,9 @@
 <?php
 
+
 declare(strict_types=1);
 
-class LikesModel
+class DislikesModel
 {
     public PDO $db;
 
@@ -11,11 +12,11 @@ class LikesModel
         $this->db = $db;
     }
 
-    public function trackLikes(int $postsId, int $usersId ): void
+    public function trackDislikes(int $postsId, int $usersId): void
     {
         $query = $this->db->prepare(
             'SELECT `posts_id`, `users_id`
-            FROM `likes`
+            FROM `dislikes`
             WHERE `posts_id` = :postsId AND `users_id` = :usersId');
         $query->execute([
             ':postsId' => $postsId,
@@ -25,13 +26,13 @@ class LikesModel
 
         if ($check != []) {
             header("Location: singlePost.php?id=$postsId");
-        } else{
-            $query = $this->db->prepare('INSERT INTO `likes` (`posts_id`, `users_id`)
+        } else {
+            $query = $this->db->prepare('INSERT INTO `dislikes` (`posts_id`, `users_id`)
                                                 VALUES (:postsId, :usersId);');
-                $query->execute([
-                        ':postsId' => $postsId,
-                        ':usersId' => $usersId
-                        ]);
+            $query->execute([
+                ':postsId' => $postsId,
+                ':usersId' => $usersId
+            ]);
         }
     }
 

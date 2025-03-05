@@ -70,4 +70,13 @@ class PostsModel
         return $query->execute([':id' => $id]);
     }
 
+    public function sendDislike(int $id): bool
+    {
+        $query = $this->db->prepare(
+            'UPDATE `posts`
+                    SET `dislikes` = `dislikes`+ 1
+                    WHERE `id` = :id;');
+        return $query->execute([':id' => $id]);
+    }
+
 }

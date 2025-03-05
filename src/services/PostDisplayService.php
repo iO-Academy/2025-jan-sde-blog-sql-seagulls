@@ -46,7 +46,7 @@ class PostDisplayService
         $output .=  "<p>$post->content</p>";
         $output .= '<div class="flex justify-center gap-5">';
         $output .= "<a class='px-3 py-2 mt-4 text-lg bg-green-300 hover:bg-green-400 hover:text-white transition inline-block rounded-sm' href='likes.php?id=$post->id'>Like</a>";
-        $output .= "<a class='px-3 py-2 mt-4 text-lg bg-red-300 hover:bg-red-400 hover:text-white transition inline-block rounded-sm' href='#'>Dislike</a>";
+        $output .= "<a class='px-3 py-2 mt-4 text-lg bg-red-300 hover:bg-red-400 hover:text-white transition inline-block rounded-sm' href='dislikes.php?id=$post->id'>Dislike</a>";
         $output .= '</div>';
         $output .= '<div class="flex justify-center">';
         $output .= '<a class="px-3 py-2 mt-4 text-lg bg-indigo-400 hover:bg-indigo-700 hover:text-white transition inline-block rounded-sm" href="index.php">View all posts</a>';
