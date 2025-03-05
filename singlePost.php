@@ -16,25 +16,16 @@ if (!$post){
     header('Location: index.php');
 }
 
- require_once 'header.php';
+$comment = $PostsModel->getComments((int)$_GET['id']);
 
-$comment = $PostsModel->getComment((int)$_GET['id']);
-
-if (!$comment){
-    header('Location: index.php');
-}
-
+//if (!$comment){
+//    header('Location: index.php');
+//}
+require_once 'header.php';
 ?>
 
 
 
-<section class="container md:w-1/2 mx-auto">
-    <article class="p-8 border border-solid rounded-md">
         <?php
         echo PostDisplayService::displaySingle($post, $comment);
         ?>
-    </article>
-</section>
-
-</body>
-</html>
