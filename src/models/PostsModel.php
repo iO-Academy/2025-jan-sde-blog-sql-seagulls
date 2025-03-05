@@ -24,6 +24,7 @@ class PostsModel
         return $query->fetchAll();
     }
 
+
     public function getSingle(int $id): PostEntity|false
     {
         $query = $this->db->prepare(
@@ -36,4 +37,17 @@ class PostsModel
         return $query->fetch();
     }
 
+    public function AddSinglePost(PostEntity $postEntity): bool
+    {
+        $query = $this->db->prepare(
+            'INSERT INTO `posts` (`title`, `content`, `username_id`,  `date_posted`, `time_posted`) 
+                    VALUES (:title, :content, :username_id, :date_posted, :time_posted);');
+        return $query->execute([
+            ':title'=>$postEntity->title,
+            ':content'=>$postEntity->content,
+            ':username_id' => $postEntity->username_id,
+            ':date_posted' => $postEntity->date_posted,
+            ':time_posted' => $postEntity->time_posted
+        ]);
+    }
 }
