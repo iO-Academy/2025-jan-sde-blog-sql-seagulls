@@ -37,23 +37,23 @@ class PostsModel
         return $query->fetch();
     }
 
-    public function addComment (CommentEntity $commentEntity): bool
+    public function addComment(CommentEntity $commentEntity): bool
     {
         $query = $this->db->prepare(
             'INSERT INTO `comments` (`content`,`username_id`, `post_id`, `date_posted`, `time_posted`) VALUES (:content, :username_id, :post_id, :date_posted, :time_posted);');
-        return $query->execute([':content'=>$commentEntity->content, ':username_id'=>$commentEntity->username_id, ':post_id'=>$commentEntity->post_id, ':date_posted'=>$commentEntity->date_posted, ':time_posted'=>$commentEntity->time_posted]);
+        return $query->execute([':content' => $commentEntity->content, ':username_id' => $commentEntity->username_id, ':post_id' => $commentEntity->post_id, ':date_posted' => $commentEntity->date_posted, ':time_posted' => $commentEntity->time_posted]);
     }
 
-    public function getComment(int $id): CommentEntity|false
+    public function getComment(int $post_id): CommentEntity|false
     {
         $query = $this->db->prepare(
             'SELECT `comments`.`content`, `comments`.`username_id`,`comments`.`post_id`,`comments`.`date_posted`,`comments`.`time_posted`
              FROM `comments`
              JOIN `users` ON `users` . `id` = `comments` . `username_id`
              JOIN `posts` ON `posts` . `id` = `comments` . `post_id`
-             WHERE `comments`.`id` = :id;');
+             WHERE `comments`.`id` = :post_id;');
         $query->setFetchMode(PDO::FETCH_CLASS, CommentEntity::class);
-        $query->execute([':id' => $id]);
+        $query->execute([':post_id' => $post_id]);
         return $query->fetch();
     }
 }

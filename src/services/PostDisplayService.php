@@ -33,7 +33,7 @@ class PostDisplayService
         return $output;
     }
 
-    static public function displaySingle(PostEntity $post): string
+    static public function displaySingle(PostEntity $post, CommentEntity $comment): string
     {
         if ($post->username == ""){
             $post->username = "Anonymous";
@@ -44,6 +44,9 @@ class PostDisplayService
         $output .=  "<p class='text-2xl mb-10'>$post->date_posted - $post->username</p>";
         $output .=  "<p>$post->content</p>";
         $output .=  '<div class="flex justify-center">';
+        $output .=  '<div class="mb-5">';
+        $output .=  "<p>$comment->content</p>";
+        $output .=  '</div>';
         $output .= '<a class="px-3 py-2 mt-4 text-lg bg-indigo-400 hover:bg-indigo-700 hover:text-white transition inline-block rounded-sm" href="index.php">View all posts</a>';
         $output .= '</div>';
         return $output;

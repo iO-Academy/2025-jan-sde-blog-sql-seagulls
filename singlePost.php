@@ -18,9 +18,9 @@ if (!$post){
 
  require_once 'header.php';
 
-$comments = $PostsModel->getComment((int)$_GET['id']);
+$comment = $PostsModel->getComment((int)$_GET['id']);
 
-if (!$comments){
+if (!$comment){
     header('Location: index.php');
 }
 
@@ -31,7 +31,7 @@ if (!$comments){
 <section class="container md:w-1/2 mx-auto">
     <article class="p-8 border border-solid rounded-md">
         <?php
-        echo PostDisplayService::displaySingle($post);
+        echo PostDisplayService::displaySingle($post, $comment);
         ?>
     </article>
 </section>
