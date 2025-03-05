@@ -15,8 +15,6 @@ if (!isset($_SESSION['loggedIn'])) {
 
 $title = $_POST['title'] ?? '';
 $content = $_POST['content'] ?? '';
-$titleError = "";
-$contentError = "";
 $dataIsValid = true;
 $postSubmitted = false;
 
@@ -25,11 +23,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_SESSION['username_id'])) {
     if (strlen($title) === 0 || strlen($title) > 30) {
         $_SESSION['titleError'] = 'Title cannot exceed 30 characters.';
         $dataIsValid = false;
+    }else {
+        unset($_SESSION['titleError']);
     }
 
     if (strlen($content) < 50 || strlen($content) > 1000) {
         $_SESSION['contentError'] = 'Content must be between 50 and 1000 characters.';
         $dataIsValid = false;
+    }else {
+        unset($_SESSION['contentError']);
     }
 
     if ($dataIsValid) {
@@ -48,10 +50,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_SESSION['username_id'])) {
     }
 }
 
-        $titleError = $_SESSION['titleError'] ?? "";
-        $contentError = $_SESSION['contentError'] ?? "";
-        unset($_SESSION['titleError'],$_SESSION['contentError']);
-
 ?>
 
 <?php include_once 'header.php'; ?>
@@ -67,8 +65,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_SESSION['username_id'])) {
         <div class="w-full sm:w-2/3">
             <label class="mb-3 block" for="title">Title:</label>
             <input class="w-full px-3 py-2 text-lg" name="title" type="text" id="title" value="<?= htmlspecialchars($title); ?>" />
-            <?php if (isset($titleError)): ?>
-                <p class="text-red-500"><?= $titleError; ?></p>
+            <?php if (isset($_SESSION['titleError'])): ?>
+                <p class="text-red-500"><?=$_SESSION['titleError']; ?></p>
             <?php endif; ?>
         </div>
     </div>
@@ -76,8 +74,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_SESSION['username_id'])) {
     <div class="mb-5">
         <label class="mb-3 block" for="content">Content:</label>
         <textarea class="w-full" name="content" id="content" rows="9"><?= htmlspecialchars($content); ?></textarea>
-        <?php if (isset($contentError)): ?>
-            <p class="text-red-500"><?= $contentError; ?></p>
+        <?php if (isset($_SESSION['contentError'])): ?>
+            <p class="text-red-500"><?= $_SESSION['contentError']; ?></p>
         <?php endif; ?>
     </div>
 
