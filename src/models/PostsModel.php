@@ -44,16 +44,16 @@ class PostsModel
         return $query->execute([':content' => $commentEntity->content, ':username_id' => $commentEntity->username_id, ':post_id' => $commentEntity->post_id, ':date_posted' => $commentEntity->date_posted, ':time_posted' => $commentEntity->time_posted]);
     }
 
-    public function getComment(int $post_id): CommentEntity|false
+    public function getComments(int $post_id): array
     {
         $query = $this->db->prepare(
-            'SELECT `comments`.`content`, `comments`.`username_id`,`comments`.`post_id`,`comments`.`date_posted`,`comments`.`time_posted`
+            'SELECT `comments`.`content`, `comments`.`username_id`,`comments`.`post_id`,`comments`.`date_posted`,`comments`.`time_posted`, `users` . `username` 
              FROM `comments`
              JOIN `users` ON `users` . `id` = `comments` . `username_id`
              JOIN `posts` ON `posts` . `id` = `comments` . `post_id`
-             WHERE `comments`.`id` = :post_id;');
+             WHERE `comments`.`post_id` = :post_id;');
         $query->setFetchMode(PDO::FETCH_CLASS, CommentEntity::class);
         $query->execute([':post_id' => $post_id]);
-        return $query->fetch();
+        return $query->fetchAll();
     }
 }

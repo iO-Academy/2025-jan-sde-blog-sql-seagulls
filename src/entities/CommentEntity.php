@@ -5,6 +5,8 @@ declare(strict_types=1);
 class CommentEntity
 {
     public int $id;
+
+    public string $username;
     public int $username_id;
     public int $post_id;
     public string $content;
