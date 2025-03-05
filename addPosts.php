@@ -13,17 +13,27 @@ if (!isset($_SESSION['loggedIn'])) {
     header('Location: login.php');
     exit();
 }
+unset($_SESSION['titleError']);
+unset($_SESSION['contentError']);
 
 $title = $_POST['title'] ?? '';
 $content = $_POST['content'] ?? '';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_SESSION['username_id'])) {
     $titleValid = PostValidationService::TitleValidation($title);
+    if (!$titleValid) {
+        $_SESSION['titleError'] = 'Title cannot exceed 30 characters.';
+    }
+
     $contentValid = PostValidationService::ContentValidation($content);
+    if (!$contentValid) {
+        $_SESSION['contentError'] = 'Content must be between 50 and 1000 characters.';
+    }
 
     if ($titleValid && $contentValid) {
-    PostValidationService::AddPostToDatabase($title, $content, $db);
-    $_SESSION['submissionValid'] = true;
+        $PostModel = new PostsModel($db);
+        PostValidationService::AddPostToDatabase($title, $content, $PostModel);
+        $_SESSION['submissionValid'] = true;
     }
 }
 
@@ -42,7 +52,7 @@ include_once 'header.php';?>
     <div class="flex flex-col sm:flex-row mb-5 gap-5">
         <div class="w-full sm:w-2/3">
             <label class="mb-3 block" for="title">Title:</label>
-            <input class="w-full px-3 py-2 text-lg" name="title" type="text" id="title" value="<?= htmlspecialchars($title); ?>" />
+            <input class="w-full px-3 py-2 text-lg" name="title" type="text" id="title" value="<?= htmlspecialchars($title); ?>"/>
             <?php if (isset($_SESSION['titleError'])): ?>
                 <p class="text-red-500"><?=$_SESSION['titleError']; ?></p>
             <?php endif; ?>
