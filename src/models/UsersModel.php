@@ -12,7 +12,7 @@ Class UsersModel
 
     public function login(string $username, string $password): array|false
     {
-        $query = $this->db->prepare('SELECT `username`, `password` FROM `users` WHERE `username` = :username AND `password`=:password;');
+        $query = $this->db->prepare('SELECT `id`,`username`, `password` FROM `users` WHERE `username` = :username AND `password`=:password;');
         $query->execute([':username' => $username, ':password' => $password]);
         return $query->fetch();
     }
