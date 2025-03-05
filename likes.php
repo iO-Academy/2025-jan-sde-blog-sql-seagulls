@@ -12,17 +12,17 @@ $LikesModel = new LikesModel($db);
 
 $id = $_GET['id'];
 
-$LikesModel->trackLikes($id, $_SESSION['username_id']);
-
-//if (!isset($_SESSION['hasLikedThis'])){
-//    $_SESSION['hasLikedThis'] = true;
-    $PostsModel->sendLike($id);
-//    echo "$id";
+if (isset($_SESSION['username'])){
+    $LikesModel->trackLikes($id, $_SESSION['username_id']);
     header("Location: singlePost.php?id=$id");
-//} else {
-//    echo "$id is this";
-////    header("Location: singlePost.php?id=$id");
-//}
+} else {
+    header("Location: login.php");
+}
+
+
+
+
+
 
 
 

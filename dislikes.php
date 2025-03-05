@@ -12,12 +12,12 @@ $DislikesModel = new DislikesModel($db);
 
 $id = $_GET['id'];
 
-$DislikesModel->trackDislikes($id, $_SESSION['username_id']);
-
-$PostsModel->sendDislike($id);
-
-header("Location: singlePost.php?id=$id");
-
+if (isset($_SESSION['username'])){
+    $DislikesModel->trackDislikes($id, $_SESSION['username_id']);
+    header("Location: singlePost.php?id=$id");
+} else {
+    header("Location: login.php");
+}
 
 
 

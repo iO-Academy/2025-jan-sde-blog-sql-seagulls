@@ -32,6 +32,12 @@ class LikesModel
                         ':postsId' => $postsId,
                         ':usersId' => $usersId
                         ]);
+
+            $query2 = $this->db->prepare(
+                'UPDATE `posts`
+                    SET `likes` = `likes`+ 1
+                    WHERE `id` = :id;');
+            $query2->execute([':id' => $postsId]);
         }
     }
 

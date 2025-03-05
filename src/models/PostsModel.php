@@ -16,7 +16,7 @@ class PostsModel
     public function getAll(): array
     {
         $query = $this->db->prepare(
-            'SELECT `posts`.`title`, `posts` . `id`, `posts` . `content`, `posts` . `date_posted` , `posts` . `time_posted`, `users` . `username` 
+            'SELECT `posts`.`title`, `posts` . `id`, `posts` . `content`, `posts` . `date_posted` , `posts` . `time_posted`, `users` . `username`, `posts` . `likes`, `posts` . `dislikes` 
             FROM `posts` 
             JOIN `users` ON `users` . `id` = `posts` . `username_id`;');
         $query->setFetchMode(PDO::FETCH_CLASS, PostEntity::class);
@@ -49,34 +49,6 @@ class PostsModel
             ':date_posted' => $postEntity->date_posted,
             ':time_posted' => $postEntity->time_posted
         ]);
-    }
-
-    public function getDislikes(int $id): array
-    {
-        $query = $this->db->prepare(
-            'SELECT `posts` . `dislikes`
-            FROM `posts`
-            WHERE `posts`.`id` = :id;;');
-        $query->execute([':id' => $id]);
-        return $query->fetch();
-    }
-
-    public function sendLike(int $id): bool
-    {
-        $query = $this->db->prepare(
-            'UPDATE `posts`
-                    SET `likes` = `likes`+ 1
-                    WHERE `id` = :id;');
-        return $query->execute([':id' => $id]);
-    }
-
-    public function sendDislike(int $id): bool
-    {
-        $query = $this->db->prepare(
-            'UPDATE `posts`
-                    SET `dislikes` = `dislikes`+ 1
-                    WHERE `id` = :id;');
-        return $query->execute([':id' => $id]);
     }
 
 }

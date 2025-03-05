@@ -23,4 +23,11 @@ Class UsersModel
                                             VALUES (:username, :password, :email);');
         return $query->execute([':username' => $username, ':password' => $password, ':email' => $email]);
     }
+
+    public function registerIdFetch(): array
+    {
+        $query = $this->db->prepare('SELECT `id` FROM `users` ORDER BY `id` DESC LIMIT 1');
+        $query->execute();
+        return $query->fetch();
+    }
 }
