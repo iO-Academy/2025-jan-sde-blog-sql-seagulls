@@ -5,6 +5,7 @@ session_start();
 require_once 'src/services/DatabaseConnectionService.php';
 require_once 'src/models/PostsModel.php';
 require_once 'src/entities/PostEntity.php';
+require_once 'src/services/PostValidationService.php';
 
 $db = DatabaseConnectionService::connect();
 
@@ -15,51 +16,28 @@ if (!isset($_SESSION['loggedIn'])) {
 
 $title = $_POST['title'] ?? '';
 $content = $_POST['content'] ?? '';
-$dataIsValid = true;
-$postSubmitted = false;
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_SESSION['username_id'])) {
+    $titleValid = PostValidationService::TitleValidation($title);
+    $contentValid = PostValidationService::ContentValidation($content);
 
-    if (strlen($title) === 0 || strlen($title) > 30) {
-        $_SESSION['titleError'] = 'Title cannot exceed 30 characters.';
-        $dataIsValid = false;
-    }else {
-        unset($_SESSION['titleError']);
-    }
-
-    if (strlen($content) < 50 || strlen($content) > 1000) {
-        $_SESSION['contentError'] = 'Content must be between 50 and 1000 characters.';
-        $dataIsValid = false;
-    }else {
-        unset($_SESSION['contentError']);
-    }
-
-    if ($dataIsValid) {
-        $postEntity = new PostEntity();
-        $postEntity->title = $title;
-        $postEntity->content = $content;
-        $postEntity->username_id = $_SESSION['username_id'];
-        $postEntity->date_posted = date('Y-m-d');
-        $postEntity->time_posted = date('H:i:s');
-
-        $PostsModel = new PostsModel($db);
-        if ($PostsModel->AddSingle($postEntity)) {
-            unset($_SESSION['titleError'], $_SESSION['contentError']);
-            $postSubmitted = true;
-        }
+    if ($titleValid && $contentValid) {
+    PostValidationService::AddPostToDatabase($title, $content, $db);
+    $_SESSION['submissionValid'] = true;
     }
 }
 
-?>
-
-<?php include_once 'header.php'; ?>
+include_once 'header.php';?>
 
 <form method="post" class="container lg:w-3/4 mx-auto flex flex-col p-8 bg-slate-200">
-    <?php if ($postSubmitted): ?>
+    <?php if (isset($_SESSION['submissionValid'])){ ?>
     <h2 class="text-3x
     l text-green-600 mb-4 text-center">Post Submitted Successfully!</h2>
     <a href="addPosts.php" class="text-center text-blue-600 hover:underline">Create another post</a>
-    <?php else: ?>
+    <?php unset($_SESSION['submissionValid']);
+    }
+    else {
+    ?>
     <h2 class="text-3xl mb-4 text-center">Create New Post</h2>
     <div class="flex flex-col sm:flex-row mb-5 gap-5">
         <div class="w-full sm:w-2/3">
@@ -82,5 +60,5 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_SESSION['username_id'])) {
     <button type="submit" class="px-3 py-2 mt-4 text-lg bg-indigo-400 hover:bg-indigo-700 hover:text-white transition inline-block rounded-sm">
         Create Post
     </button>
-    <?php endif; ?>
 </form>
+<?php }
