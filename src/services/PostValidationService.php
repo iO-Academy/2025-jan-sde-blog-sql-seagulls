@@ -29,7 +29,7 @@ class PostValidationService
             $postEntity->date_posted = date('Y-m-d');
             $postEntity->time_posted = date('H:i:s');
 
-            if ($PostsModel->AddSingle($postEntity)) {
+            if ($PostsModel->AddSinglePost($postEntity)) {
                 unset($_SESSION['titleError'], $_SESSION['contentError']);
             }
         }

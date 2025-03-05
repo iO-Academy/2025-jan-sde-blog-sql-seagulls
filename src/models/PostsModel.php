@@ -24,7 +24,20 @@ class PostsModel
         return $query->fetchAll();
     }
 
-    public function AddSingle(PostEntity $postEntity): bool
+
+    public function getSingle(int $id): PostEntity|false
+    {
+        $query = $this->db->prepare(
+            'SELECT `posts`.`title`, `posts` . `id`, `posts` . `content`, `posts` . `date_posted` , `posts` . `time_posted`, `users` . `username` 
+            FROM `posts` 
+            JOIN `users` ON `users` . `id` = `posts` . `username_id`
+            WHERE `posts`.`id` = :id;');
+        $query->setFetchMode(PDO::FETCH_CLASS, PostEntity::class);
+        $query->execute([':id' => $id]);
+        return $query->fetch();
+    }
+
+    public function AddSinglePost(PostEntity $postEntity): bool
     {
         $query = $this->db->prepare(
             'INSERT INTO `posts` (`title`, `content`, `username_id`,  `date_posted`, `time_posted`) 
