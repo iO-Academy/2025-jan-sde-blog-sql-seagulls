@@ -16,7 +16,7 @@ class PostsModel
     public function getAll(): array
     {
         $query = $this->db->prepare(
-            'SELECT `posts`.`title`, `posts` . `id`, `posts` . `content`, `posts` . `date_posted` , `posts` . `time_posted`, `users` . `username`, `posts` . `likes`, `posts` . `dislikes` 
+    'SELECT `posts`.`title`, `posts` . `id`, `posts` . `content`, `posts` . `date_posted` , `posts` . `time_posted`, `users` . `username`, `posts` . `likes`, `posts` . `dislikes` 
             FROM `posts` 
             JOIN `users` ON `users` . `id` = `posts` . `username_id`;');
         $query->setFetchMode(PDO::FETCH_CLASS, PostEntity::class);
@@ -28,7 +28,7 @@ class PostsModel
     public function getSingle(int $id): PostEntity|false
     {
         $query = $this->db->prepare(
-            'SELECT `posts`.`title`, `posts` . `id`, `posts` . `likes`, `posts` . `dislikes`, `posts` . `content`, `posts` . `date_posted` , `posts` . `time_posted`, `users` . `username` 
+    'SELECT `posts`.`title`, `posts` . `id`, `posts` . `likes`, `posts` . `dislikes`, `posts` . `content`, `posts` . `date_posted` , `posts` . `time_posted`, `users` . `username` 
             FROM `posts` 
             JOIN `users` ON `users` . `id` = `posts` . `username_id`
             WHERE `posts`.`id` = :id;');

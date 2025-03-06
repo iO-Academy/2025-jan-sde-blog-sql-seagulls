@@ -15,7 +15,7 @@ class DislikesModel
     public function trackDislikes(int $postsId, int $usersId): void
     {
         $query = $this->db->prepare(
-            'SELECT `posts_id`, `users_id`
+    'SELECT `posts_id`, `users_id`
             FROM `dislikes`
             WHERE `posts_id` = :postsId AND `users_id` = :usersId');
         $query->execute([
@@ -35,11 +35,10 @@ class DislikesModel
             ]);
 
             $query2 = $this->db->prepare(
-                'UPDATE `posts`
+            'UPDATE `posts`
                     SET `dislikes` = `dislikes`+ 1
                     WHERE `id` = :id;');
             $query2->execute([':id' => $postsId]);
         }
     }
-
 }
