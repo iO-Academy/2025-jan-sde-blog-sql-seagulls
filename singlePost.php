@@ -7,6 +7,7 @@ require_once 'src/entities/PostEntity.php';
 require_once 'src/models/PostsModel.php';
 require_once 'src/entities/CommentEntity.php';
 require_once 'src/services/CommentValidationService.php';
+require_once 'src/models/CommentsModel.php';
 
 include_once 'header.php';
 
@@ -14,28 +15,32 @@ $db = DatabaseConnectionService::connect();
 $PostsModel = new PostsModel($db);
 $hideComments = false;
 
+$contentError = "";
+$content = $_POST['content'] ?? '';
+$id = (int)$_GET['id'];
 
-$post = $PostsModel->getSingle((int)$_GET['id']);
+$post = $PostsModel->getSingle($id);
 
 if (!$post) {
     header('Location: index.php');
 }
-$contentError = "";
-$content = $_POST['content'] ?? '';
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST"){
     $contentValid = CommentValidationService::ContentValidation($content);
     if (!$contentValid) {
         $contentError = 'Content must be between 10 and 200 characters.';
     }
 
     if ($contentValid) {
-        $PostModel = new PostsModel($db);
-        CommentValidationService::AddCommentToDatabase($content, $PostModel,(int)$_GET['id'] );
+        $CommentModel = new CommentsModel($db);
+        $commentEntity = CommentsModel::AddCommentToDatabase($id, $content);
+        $CommentModel->addComment($commentEntity);
         $hideComments = true;
+        $content = '';
     }
  }
-$comment = $PostsModel->getComments((int)$_GET['id']);
+
+$comment = $PostsModel->getComments($id);
 echo PostDisplayService::displaySingle($post, $comment);
 
 if (!isset($_SESSION['loggedIn'])) {
@@ -53,7 +58,7 @@ if (!isset($_SESSION['loggedIn'])) {
             <textarea class="w-full" id="content" rows="5" name="content"><?= htmlspecialchars($content); ?></textarea>
         </div>
 
-        <input class="px-3 py-2 mt-4 text-lg bg-indigo-400 hover:bg-indigo-700 hover:text-white transition inline-block rounded-sm" type="submit" value="Post Comment"/>
+        <input class="px-3 py-2 mt-4 text-lg bg-indigo-400 hover:bg-indigo-700 hover:text-white transition inline-block rounded-sm" type="submit" name="submit" value="Post Comment"/>
         <?php if (strlen($contentError) != 0):?>
             <p class="text-red-500"><?=$contentError; ?></p>
         <?php endif; ?>

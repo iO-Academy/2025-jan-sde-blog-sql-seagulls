@@ -38,10 +38,6 @@ class PostDisplayService
         if ($post->username == ""){
             $post->username = "Anonymous";
         }
-//        if ($comment->id == ""){
-//            $comment->id = 0;
-//        }
-
 
         $output = '<section class="container md:w-1/2 mx-auto">';
         $output .= '<article class="p-8 border border-solid rounded-md">';

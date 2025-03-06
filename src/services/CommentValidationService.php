@@ -10,17 +10,4 @@ class CommentValidationService
         }
         return true;
     }
-
-    static public function AddCommentToDatabase(string $content, PostsModel $PostsModel, int $id): void
-    {
-        $commentEntity = new CommentEntity();
-        $commentEntity->post_id = $id;
-        $commentEntity->content = $content;
-        $commentEntity->username_id = $_SESSION['username_id'];
-        $commentEntity->date_posted = date('Y-m-d');
-        $commentEntity->time_posted = date('H:i:s');
-        $PostsModel->addComment($commentEntity);
-    }
 }
-
-
