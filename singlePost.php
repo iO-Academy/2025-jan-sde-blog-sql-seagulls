@@ -10,11 +10,6 @@ require_once 'src/services/CommentValidationService.php';
 
 include_once 'header.php';
 
-if (!isset($_SESSION['loggedIn'])) {
-    header('Location: login.php');
-    exit();
-}
-
 $db = DatabaseConnectionService::connect();
 $PostsModel = new PostsModel($db);
 
@@ -36,19 +31,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_SESSION['username_id'])) {
     if ($contentValid) {
         $PostModel = new PostsModel($db);
         CommentValidationService::AddCommentToDatabase($content, $PostModel,(int)$_GET['id'] );
-        $_SESSION['submissionValid'] = true;
+        $_SESSION['hideComments'] = true;
     }
  }
 $comment = $PostsModel->getComments((int)$_GET['id']);
 echo PostDisplayService::displaySingle($post, $comment);
 
+if (!isset($_SESSION['loggedIn'])) {
+    unset($_SESSION['hideComments']);
+    exit();
+}
 ?>
 <section class="container md:w-1/2 mx-auto mt-5">
     <form method="post" class="p-8 border border-solid rounded-md bg-slate-200">
-        <?php if (isset($_SESSION['submissionValid'])){ ?>
+        <?php if (isset($_SESSION['hideComments'])){ ?>
         <h2 class="text-3x
     l text-green-600 mb-4 text-center">Comment Submitted Successfully!</h2>
-            <?php unset($_SESSION['submissionValid']);
+            <?php unset($_SESSION['hideComments']);
         }
         else {
         ?>
