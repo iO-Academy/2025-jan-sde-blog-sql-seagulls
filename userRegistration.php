@@ -20,7 +20,6 @@ if (isset($_POST['submit'])) {
     if ($register) {
         $_SESSION['loggedIn'] = true;
         $_SESSION['username'] = $username;
-        $_SESSION['username_id'] = (int)$UsersModel->registerIdFetch();
         header('Location: index.php');
         exit();
     } else {
