@@ -15,6 +15,8 @@ use PHPUnit\Framework\TestCase;
             $input->title = 'Test';
             $input->username = 'TestName';
             $input->content = 'TestContent';
+            $input->likes = 50;
+            $input->dislikes = 20;
             $input->date_posted = "2025-02-01";
             $input->time_posted = "15:22:00";
 
@@ -22,6 +24,8 @@ use PHPUnit\Framework\TestCase;
             $this->assertStringContainsString($input->title, $actual);
             $this->assertStringContainsString($input->username, $actual);
             $this->assertStringContainsString($input->content, $actual);
+            $this->assertStringContainsString($input->likes, $actual);
+            $this->assertStringContainsString($input->dislikes, $actual);
             $this->assertStringContainsString($input->date_posted, $actual);
             $this->assertStringContainsString($input->id, $actual);
         }
@@ -34,6 +38,8 @@ use PHPUnit\Framework\TestCase;
             $input->title = 'Test';
             $input->username = 'TestName';
             $input->content = 'TestContent, TestContent, TestContent, TestContent, TestContent, TestContent, TestContent, TestContent, TestContent, TestContent, TestContent, TestContent';
+            $input->likes = 50;
+            $input->dislikes = 20;
             $input->date_posted = "2025-02-01";
             $input->time_posted = "15:22:00";
 
@@ -41,6 +47,8 @@ use PHPUnit\Framework\TestCase;
             $this->assertStringContainsString($input->title, $actual);
             $this->assertStringContainsString($input->username, $actual);
             $this->assertStringContainsString('TestContent, TestContent, TestContent, TestContent, TestContent, TestContent, TestContent, TestConte...', $actual);
+            $this->assertStringContainsString($input->likes, $actual);
+            $this->assertStringContainsString($input->dislikes, $actual);
             $this->assertStringContainsString($input->date_posted, $actual);
             $this->assertStringContainsString($input->id, $actual);
         }
@@ -60,6 +68,8 @@ use PHPUnit\Framework\TestCase;
             $input->title = 'Test';
             $input->username = 'TestName';
             $input->content = 'TestContent';
+            $input->likes = 50;
+            $input->dislikes = 20;
             $input->date_posted = "2025-02-01";
             $input->time_posted = "15:22:00";
 
@@ -67,6 +77,8 @@ use PHPUnit\Framework\TestCase;
             $this->assertStringContainsString($input->title, $actual);
             $this->assertStringContainsString($input->username, $actual);
             $this->assertStringContainsString($input->content, $actual);
+            $this->assertStringContainsString($input->likes, $actual);
+            $this->assertStringContainsString($input->dislikes, $actual);
             $this->assertStringContainsString($input->date_posted, $actual);
         }
 
@@ -77,6 +89,8 @@ use PHPUnit\Framework\TestCase;
             $input->title = 'Test';
             $input->username = '';
             $input->content = 'TestContent';
+            $input->likes = 50;
+            $input->dislikes = 20;
             $input->date_posted = "2025-02-01";
             $input->time_posted = "15:22:00";
 
@@ -85,6 +99,8 @@ use PHPUnit\Framework\TestCase;
             $this->assertStringContainsString($input->title, $actual);
             $this->assertStringContainsString('Anonymous', $actual);
             $this->assertStringContainsString($input->content, $actual);
+            $this->assertStringContainsString($input->likes, $actual);
+            $this->assertStringContainsString($input->dislikes, $actual);
             $this->assertStringContainsString($input->date_posted, $actual);
         }
 

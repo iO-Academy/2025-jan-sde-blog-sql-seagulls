@@ -23,4 +23,5 @@ Class UsersModel
                                             VALUES (:username, :password, :email);');
         return $query->execute([':username' => $username, ':password' => $password, ':email' => $email]);
     }
+
 }

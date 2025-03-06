@@ -11,4 +11,6 @@ class PostEntity
     public string $date_posted;
     public string $time_posted;
     public int $username_id;
+    public ?int $likes;
+    public ?int $dislikes;
 }
