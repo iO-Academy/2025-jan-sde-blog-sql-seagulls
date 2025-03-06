@@ -17,10 +17,13 @@ Class UsersModel
         return $query->fetch();
     }
 
-    public function register(string $username, string $password, string $email): bool
+    public function register(string $username, string $password, string $email): ?int
     {
         $query = $this->db->prepare('INSERT INTO `users` (`username`,`password`, `email`) 
                                             VALUES (:username, :password, :email);');
-        return $query->execute([':username' => $username, ':password' => $password, ':email' => $email]);
+        if ($query->execute([':username' => $username, ':password' => $password, ':email' => $email])) {
+            return (int) $this->db->lastInsertId();
+            }
+        return null;
     }
 }
