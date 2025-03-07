@@ -18,6 +18,9 @@ class PostDisplayService
                 } else {
                     $content = $post->content;
                 }
+                if ($post->username == ""){
+                    $post->username = "Anonymous";
+                }
                 $output .= '<article class="p-8 border border-solid rounded-md">';
                 $output .= '<div class="flex justify-between items-center flex-col md:flex-row mb-4">';
                 $output .= "<h2 class='text-4xl'>$post->title</h2>";
