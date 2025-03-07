@@ -19,8 +19,11 @@ Class UsersModel
 
     public function register(string $username, string $password, string $email): bool
     {
-        $query = $this->db->prepare('INSERT INTO `users` (`username`,`password`, `email`) 
+        if (strlen($_POST['username']) > 5 && strlen($_POST['password']) > 5 && strlen($_POST['email']) > 5 ){
+            $query = $this->db->prepare('INSERT INTO `users` (`username`,`password`, `email`) 
                                             VALUES (:username, :password, :email);');
-        return $query->execute([':username' => $username, ':password' => $password, ':email' => $email]);
+            return $query->execute([':username' => $username, ':password' => $password, ':email' => $email]);
+    }
+        return false;
     }
 }

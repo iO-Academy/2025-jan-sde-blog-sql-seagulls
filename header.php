@@ -9,8 +9,15 @@
 <nav class="flex justify-between items-center py-5 px-4 mb-10 border-b border-solid">
     <a href="index.php"><h1 class="text-5xl">Blog</h1></a>
     <div class="flex gap-5">
-        <a href="login.php">Login</a>
+        <?php
+        if (!isset($_SESSION['loggedIn'])) {
+            ?><a href="login.php">Login</a><?php
+        }?>
         <a href="logout.php">Log out</a>
-        <a href="userRegistration.php">Register</a>
+        <?php
+        if (!isset($_SESSION['loggedIn'])) {
+        ?><a href="userRegistration.php">Register</a><?php
+        }?>
+
     </div>
 </nav>
