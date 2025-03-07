@@ -14,12 +14,33 @@ class PostsModel
         $this->db = $db;
     }
 
-    public function getAll(): array
+    public function getAll(string $postOrder): array
     {
+        $order_by = "";
+        if ($postOrder == 'newest'){
+            $order_by = 'ORDER BY `date_posted` DESC';
+        } elseif ($postOrder == 'oldest') {
+            $order_by = 'ORDER BY `date_posted` ASC';
+        } elseif ($postOrder == 'most_liked') {
+            $order_by = 'ORDER BY `likes` DESC';
+        } elseif ($postOrder == 'most_disliked') {
+            $order_by = 'ORDER BY `dislikes` DESC';
+        }
+
+
         $query = $this->db->prepare(
-    'SELECT `posts`.`title`, `posts` . `id`, `posts` . `content`, `posts` . `date_posted` , `posts` . `time_posted`, `users` . `username`, `posts` . `likes`, `posts` . `dislikes` 
-            FROM `posts` 
-            JOIN `users` ON `users` . `id` = `posts` . `username_id`;');
+            "SELECT `posts`.`title`, 
+                        `posts`.`id`, 
+                        `posts`.`content`, 
+                        `posts`.`date_posted` , 
+                        `posts`.`time_posted`, 
+                        `users`.`username`, 
+                        `posts`.`likes`, 
+                        `posts`.`dislikes` 
+                FROM `posts` 
+                JOIN `users` ON `users` . `id` = `posts` . `username_id`
+                $order_by;");
+
         $query->setFetchMode(PDO::FETCH_CLASS, PostEntity::class);
         $query->execute();
         return $query->fetchAll();
@@ -28,7 +49,7 @@ class PostsModel
     public function getSingle(int $id): PostEntity|false
     {
         $query = $this->db->prepare(
-    'SELECT `posts`.`title`, `posts`.`id`, `posts`.`likes`, `posts`.`dislikes`, `posts`.`content`, `posts`.`date_posted`, `posts`.`time_posted`, `users`.`username` 
+            'SELECT `posts`.`title`, `posts`.`id`, `posts`.`likes`, `posts`.`dislikes`, `posts`.`content`, `posts`.`date_posted`, `posts`.`time_posted`, `users`.`username` 
             FROM `posts` 
             JOIN `users` ON `users` . `id` = `posts` . `username_id`
             WHERE `posts`.`id` = :id;');
