@@ -10,4 +10,9 @@ class CommentValidationService
         }
         return true;
     }
+
+    static public function ContentSpecialCharCheck(string $content): string
+    {
+        return htmlspecialchars($content);
+    }
 }
