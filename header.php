@@ -18,6 +18,6 @@
         if (!isset($_SESSION['loggedIn'])) {
         ?><a href="userRegistration.php">Register</a><?php
         }?>
-
+        <a href="addPosts.php">Add Post</a>
     </div>
 </nav>

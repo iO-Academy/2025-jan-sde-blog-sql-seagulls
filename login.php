@@ -20,6 +20,7 @@ if (isset($_SESSION['loggedIn'])) {
         if ($login) {
             $_SESSION['loggedIn'] = true;
             $_SESSION['username'] = $username;
+            $_SESSION['username_id'] = $login['id'];
             header('Location: index.php');
             exit();
         } else {
