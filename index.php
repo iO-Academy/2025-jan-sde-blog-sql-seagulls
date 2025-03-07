@@ -9,8 +9,8 @@ $db = DatabaseConnectionService::connect();
 $PostsModel = new PostsModel($db);
 
 $sortOrder = 'newest';
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $sortPosts = $_POST['sort'];
+if (isset($_GET['sort'])) {
+    $sortPosts = $_GET['sort'];
 
     if ($sortPosts == "newest") {
         $sortOrder = "newest";
@@ -30,7 +30,7 @@ include_once 'header.php';
 
 <body class="selection:bg-teal-200">
 <section class="container lg:w-1/2 mx-auto flex flex-col gap-5">
-    <form method="post">
+    <form method="get">
         <div>
             <label for="sort" class="text-lg block xl:inline">Sort by:</label>
             <select onclick="this.form.submit()" id="sort" name="sort" class="px-3 py-2 text-lg w-full xl:w-auto">
