@@ -12,16 +12,18 @@ Class UsersModel
 
     public function login(string $username, string $password): array|false
     {
-        $query = $this->db->prepare('SELECT `username`, `password`, `id` FROM `users` WHERE `username` = :username AND `password`=:password;');
+        $query = $this->db->prepare('SELECT `id`,`username`, `password` FROM `users` WHERE `username` = :username AND `password`=:password;');
         $query->execute([':username' => $username, ':password' => $password]);
         return $query->fetch();
     }
 
-    public function register(string $username, string $password, string $email): bool
+    public function register(string $username, string $password, string $email): ?int
     {
         $query = $this->db->prepare('INSERT INTO `users` (`username`,`password`, `email`) 
                                             VALUES (:username, :password, :email);');
-        return $query->execute([':username' => $username, ':password' => $password, ':email' => $email]);
+        if ($query->execute([':username' => $username, ':password' => $password, ':email' => $email])) {
+            return (int) $this->db->lastInsertId();
+            }
+        return null;
     }
-
 }

@@ -1,31 +1,50 @@
 <?php
+declare(strict_types=1);
+session_start();
+require_once 'src/services/PostDisplayService.php';
+require_once 'src/services/DatabaseConnectionService.php';
+require_once 'src/entities/PostEntity.php';
+require_once 'src/models/PostsModel.php';
+require_once 'src/entities/CommentEntity.php';
+require_once 'src/services/CommentValidationService.php';
+require_once 'src/services/CommentsBoxDisplayService.php';
+require_once 'src/models/CommentsModel.php';
 
- declare(strict_types=1);
- require_once 'src/services/PostDisplayService.php';
- require_once 'src/services/DatabaseConnectionService.php';
- require_once 'src/entities/PostEntity.php';
- require_once 'src/models/PostsModel.php';
+include_once 'header.php';
 
- $db = DatabaseConnectionService::connect();
- $PostsModel = new PostsModel($db);
+$db = DatabaseConnectionService::connect();
+$PostsModel = new PostsModel($db);
+$hideCommentBox = false;
 
-$post = $PostsModel->getSingle((int)$_GET['id']);
+$contentError = "";
+$content = $_POST['content'] ?? '';
+$id = (int)$_GET['id'];
+$contentValid = null;
 
-if (!$post){
+$post = $PostsModel->getSingle($id);
+
+if (!$post) {
     header('Location: index.php');
 }
 
- require_once 'header.php';
+if ($_SERVER["REQUEST_METHOD"] === "POST"){
+    $contentValid = CommentValidationService::ContentValidation($content);
+
+    if ($contentValid) {
+        $CommentModel = new CommentsModel($db);
+        $commentEntity = CommentsModel::CreateCommentEntity($id, $content, $_SESSION['username_id']);
+        $CommentModel->addComment($commentEntity);
+        $hideCommentBox = true;
+        $content = "";
+
+    }
+ }
+
+$comment = $PostsModel->getComments($id);
+echo PostDisplayService::displaySingle($post, $comment);
+
+if (isset($_SESSION['loggedIn'])) {
+    $content = CommentValidationService::ContentSpecialCharCheck($content);
+    echo CommentsBoxDisplayService::commentBoxDisplay($content, $contentValid, $hideCommentBox);
+}
 ?>
-
-
-<section class="container md:w-1/2 mx-auto">
-    <article class="p-8 border border-solid rounded-md">
-        <?php
-        echo PostDisplayService::displaySingle($post);
-        ?>
-    </article>
-</section>
-
-</body>
-</html>

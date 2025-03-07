@@ -34,12 +34,15 @@ class PostDisplayService
         return $output;
     }
 
-    static public function displaySingle(PostEntity $post): string
+    static public function displaySingle(PostEntity $post, array $comments): string
     {
         if ($post->username == ""){
             $post->username = "Anonymous";
         }
-        $output = '<div class="flex justify-between items-center flex-col md:flex-row mb-4">';
+
+        $output = '<section class="container md:w-1/2 mx-auto">';
+        $output .= '<article class="p-8 border border-solid rounded-md">';
+        $output .= '<div class="flex justify-between items-center flex-col md:flex-row mb-4">';
         $output .= "<h2 class='text-4xl'>$post->title</h2>";
         $output .= "<span class='text-xl''>$post->likes likes - $post->dislikes dislikes</span>";
         $output .= '</div>';
@@ -50,10 +53,18 @@ class PostDisplayService
         $output .= "<a class='px-3 py-2 mt-4 text-lg bg-red-300 hover:bg-red-400 hover:text-white transition inline-block rounded-sm' href='dislikes.php?id=$post->id'>Dislike</a>";
         $output .= '</div>';
         $output .= '<div class="flex justify-center">';
+        $output .=  '<div class="mb-5">';
         $output .= '<a class="px-3 py-2 mt-4 text-lg bg-indigo-400 hover:bg-indigo-700 hover:text-white transition inline-block rounded-sm" href="index.php">View all posts</a>';
-        $output .= '</div>';
+        $output .= ' </article>';
+        $output .= '</section>';
+        foreach ($comments as $comment) {
+            $output .=  '<section class="container md:w-1/2 mx-auto mt-5 mb-10">';
+            $output .=  '<div class="p-8 border border-solid rounded-md bg-slate-200">';
+            $output .=  "<div class='text-2xl mb-3'>$comment->username - $comment->date_posted</div>";
+            $output .=  "<p>$comment->content</p>";
+            $output .=  '</div>';
+        $output .=  '</section>';}
         return $output;
 
     }
-
 }
