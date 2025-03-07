@@ -24,12 +24,12 @@ class CommentsModel
             ':date_posted' => $commentEntity->date_posted,
             ':time_posted' => $commentEntity->time_posted]);
     }
-    static public function AddCommentToDatabase(int $id, string $content): CommentEntity
+    static public function CreateCommentEntity(int $id, string $content, int $userId): CommentEntity
     {
         $commentEntity = new CommentEntity();
         $commentEntity->post_id = $id;
         $commentEntity->content = $content;
-        $commentEntity->username_id = $_SESSION['username_id'];
+        $commentEntity->username_id = $userId;
         $commentEntity->date_posted = date('Y-m-d');
         $commentEntity->time_posted = date('H:i:s');
         return $commentEntity;

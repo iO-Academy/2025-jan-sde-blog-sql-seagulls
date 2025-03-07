@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
 
     if ($contentValid) {
         $CommentModel = new CommentsModel($db);
-        $commentEntity = CommentsModel::AddCommentToDatabase($id, $content);
+        $commentEntity = CommentsModel::CreateCommentEntity($id, $content, $_SESSION['username_id']);
         $CommentModel->addComment($commentEntity);
         $hideCommentBox = true;
         $content = "";
