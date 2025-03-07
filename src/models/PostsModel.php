@@ -13,12 +13,62 @@ class PostsModel
         $this->db = $db;
     }
 
-    public function getAll(): array
+    public function getAll(string $postOrder): array
     {
-        $query = $this->db->prepare(
-    'SELECT `posts`.`title`, `posts` . `id`, `posts` . `content`, `posts` . `date_posted` , `posts` . `time_posted`, `users` . `username`, `posts` . `likes`, `posts` . `dislikes` 
-            FROM `posts` 
-            JOIN `users` ON `users` . `id` = `posts` . `username_id`;');
+        if ($postOrder == 'newest'){
+            $query = $this->db->prepare(
+         'SELECT `posts`.`title`, 
+                        `posts`.`id`, 
+                        `posts`.`content`, 
+                        `posts`.`date_posted` , 
+                        `posts`.`time_posted`, 
+                        `users`.`username`, 
+                        `posts`.`likes`, 
+                        `posts`.`dislikes` 
+                FROM `posts` 
+                JOIN `users` ON `users` . `id` = `posts` . `username_id`
+                ORDER BY `date_posted` DESC;');
+        } elseif ($postOrder == 'oldest') {
+            $query = $this->db->prepare(
+         'SELECT `posts`.`title`, 
+                        `posts`.`id`, 
+                        `posts`.`content`, 
+                        `posts`.`date_posted` , 
+                        `posts`.`time_posted`, 
+                        `users`.`username`, 
+                        `posts`.`likes`, 
+                        `posts`.`dislikes` 
+                FROM `posts` 
+                JOIN `users` ON `users` . `id` = `posts` . `username_id`
+                ORDER BY `date_posted` ASC;');
+        } elseif ($postOrder == 'most_liked') {
+            $query = $this->db->prepare(
+         'SELECT `posts`.`title`, 
+                        `posts`.`id`, 
+                        `posts`.`content`, 
+                        `posts`.`date_posted` , 
+                        `posts`.`time_posted`, 
+                        `users`.`username`, 
+                        `posts`.`likes`, 
+                        `posts`.`dislikes` 
+                FROM `posts` 
+                JOIN `users` ON `users` . `id` = `posts` . `username_id`
+                ORDER BY `likes` DESC;');
+        } elseif ($postOrder == 'most_disliked') {
+            $query = $this->db->prepare(
+         'SELECT `posts`.`title`, 
+                        `posts`.`id`, 
+                        `posts`.`content`, 
+                        `posts`.`date_posted` , 
+                        `posts`.`time_posted`, 
+                        `users`.`username`, 
+                        `posts`.`likes`, 
+                        `posts`.`dislikes`  
+                FROM `posts` 
+                JOIN `users` ON `users` . `id` = `posts` . `username_id`
+                ORDER BY `dislikes` DESC;');
+        }
+
         $query->setFetchMode(PDO::FETCH_CLASS, PostEntity::class);
         $query->execute();
         return $query->fetchAll();
@@ -28,7 +78,7 @@ class PostsModel
     public function getSingle(int $id): PostEntity|false
     {
         $query = $this->db->prepare(
-    'SELECT `posts`.`title`, `posts`.`id`, `posts`.`likes`, `posts`.`dislikes`, `posts`.`content`, `posts`.`date_posted`, `posts`.`time_posted`, `users`.`username` 
+            'SELECT `posts`.`title`, `posts`.`id`, `posts`.`likes`, `posts`.`dislikes`, `posts`.`content`, `posts`.`date_posted`, `posts`.`time_posted`, `users`.`username` 
             FROM `posts` 
             JOIN `users` ON `users` . `id` = `posts` . `username_id`
             WHERE `posts`.`id` = :id;');
