@@ -12,9 +12,12 @@ Class UsersModel
 
     public function login(string $username, string $password): array|false
     {
-        $query = $this->db->prepare('SELECT `username`, `password`, `id` FROM `users` WHERE `username` = :username AND `password`=:password;');
-        $query->execute([':username' => $username, ':password' => $password]);
-        return $query->fetch();
+        if (strlen($_POST['username']) > 5 && strlen($_POST['password']) > 5) {
+            $query = $this->db->prepare('SELECT `username`, `password`, `id` FROM `users` WHERE `username` = :username AND `password`=:password;');
+            $query->execute([':username' => $username, ':password' => $password]);
+            return $query->fetch();
+        }
+        return false;
     }
 
     public function register(string $username, string $password, string $email): bool
@@ -23,7 +26,7 @@ Class UsersModel
             $query = $this->db->prepare('INSERT INTO `users` (`username`,`password`, `email`) 
                                             VALUES (:username, :password, :email);');
             return $query->execute([':username' => $username, ':password' => $password, ':email' => $email]);
-    }
+        }
         return false;
     }
 
