@@ -33,7 +33,7 @@ include_once 'header.php';
     <form method="get">
         <div>
             <label for="sort" class="text-lg block xl:inline">Sort by:</label>
-            <select onclick="this.form.submit()" id="sort" name="sort" class="px-3 py-2 text-lg w-full xl:w-auto">
+            <select onchange="this.form.submit()" id="sort" name="sort" class="px-3 py-2 text-lg w-full xl:w-auto">
                 <option value="newest" <?php echo ($sortOrder == 'newest') ? 'selected' : ''; ?>>Newest</option>
                 <option value="oldest" <?php echo ($sortOrder == 'oldest') ? 'selected' : ''; ?>>Oldest</option>
                 <option value="most_liked" <?php echo ($sortOrder == 'most_liked') ? 'selected' : ''; ?>>Most Liked</option>
